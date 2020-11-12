@@ -3,13 +3,11 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { User } from './interfaces/user.interface';
 import { UserRepository } from './users.repository';
 
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[];
 
     constructor(
         @InjectRepository(UserRepository)
