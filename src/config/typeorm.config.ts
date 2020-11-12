@@ -7,6 +7,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     username: 'admin',
     password: 'achi2228284',
     database: 'planner_schema',
-    entities: [__dirname + '/../**/*.entity.ts'],
+    entities: [__dirname + '/../**/*.entity.js'],
     synchronize: true
 }
