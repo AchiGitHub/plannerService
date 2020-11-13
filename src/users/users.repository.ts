@@ -10,7 +10,7 @@ export class UserRepository extends Repository<Clients> {
     async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
 
         const { username, password, first_name, age, gender, last_name, register_date, zip_code, location } = authCredentialsDto;
-        
+
         const salt = await bcrypt.genSalt();
 
         const user = new Clients();
@@ -26,10 +26,10 @@ export class UserRepository extends Repository<Clients> {
         user.location = location;
         user.zip_code = zip_code;
 
-        try{
+        try {
             await user.save();
         } catch (error) {
-            if(error.code === 'ER_DUP_ENTRY') {
+            if (error.code === 'ER_DUP_ENTRY') {
                 throw new ConflictException('Username already exists');
             } else {
                 throw new InternalServerErrorException();
@@ -41,14 +41,14 @@ export class UserRepository extends Repository<Clients> {
         const { username, password } = authCredentialsDto;
         const user = await this.findOne({ username });
 
-        if(user && await user.validatePassword(password)){
+        if (user && await user.validatePassword(password)) {
             return user.username;
         } else {
             return null;
         }
     }
 
-    private async hasPassword(password: string, salt: string){
+    private async hasPassword(password: string, salt: string) {
         return bcrypt.hash(password, salt);
     }
 

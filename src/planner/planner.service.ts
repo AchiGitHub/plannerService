@@ -3,33 +3,32 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { UserRepository } from './users.repository';
-
+import { PlannerRepository } from './planner.repository';
 
 @Injectable()
-export class UsersService {
+export class PlannerService {
 
     constructor(
-        @InjectRepository(UserRepository)
-        private userRepository: UserRepository,
+        @InjectRepository(PlannerRepository)
+        private plannerRepository: PlannerRepository,
         private jwtService: JwtService
     ) { }
 
-    signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-        return this.userRepository.signUp(authCredentialsDto);
+    register(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+        return this.plannerRepository.register(authCredentialsDto);
     }
 
     async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
-        const username = await this.userRepository.validateUserPassword(authCredentialsDto);
+
+        const username = await this.plannerRepository.validatePlannerPassword(authCredentialsDto);
 
         if (!username) {
-            throw new UnauthorizedException('Invalid Credentials')
+            throw new UnauthorizedException('Invalid Credentials');
         }
 
-        const payload: JwtPayload = { username, role: "client" };
+        const payload: JwtPayload = { username, role: "planner" };
         const accessToken = await this.jwtService.sign(payload);
 
         return { accessToken };
     }
-
 }
