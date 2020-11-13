@@ -13,7 +13,7 @@ export class PlannerController {
     }
 
     @Post('/signin')
-    async signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto) {
+    async signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{accessToken: string}> {
         return this.plannerService.signIn(authCredentialsDto);
     }
 }
